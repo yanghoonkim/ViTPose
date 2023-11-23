@@ -19,7 +19,10 @@ from mmpose.models import build_posenet
 from mmpose.utils import collect_env, get_root_logger, setup_multi_processes
 import mmcv_custom
 
+from nia.utils import *
+
 def parse_args():
+    split_data()
     parser = argparse.ArgumentParser(description='Train a pose model')
     parser.add_argument('config', help='train config file path')
     parser.add_argument('--work-dir', help='the dir to save logs and models')

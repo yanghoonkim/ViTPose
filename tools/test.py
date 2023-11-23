@@ -16,6 +16,8 @@ from mmpose.datasets import build_dataloader, build_dataset
 from mmpose.models import build_posenet
 from mmpose.utils import setup_multi_processes
 
+from nia.utils import *
+
 try:
     from mmcv.runner import wrap_fp16_model
 except ImportError:
@@ -85,6 +87,7 @@ def merge_configs(cfg1, cfg2):
 
 
 def main():
+    split_data()
     args = parse_args()
 
     cfg = Config.fromfile(args.config)
