@@ -55,8 +55,8 @@ ANNO_PATH = BASE_PATH / '라벨링데이터'
 COLL_PATH = BASE_PATH / '원천데이터'
 TRAIN_LABEL_PATH = BASE_PATH / 'keypoint_train_label.json'
 VALID_LABEL_PATH = BASE_PATH / 'keypoint_valid_label.json'
-VALID_BOX_PATH = BASE_PATH / 'boxes.json'
 TEST_LABEL_PATH = BASE_PATH / 'keypoint_test_label.json'
+BOX_PATH = BASE_PATH / 'boxes.json'
 
 def to_frame(pairs):
     df = pd.DataFrame(pairs, columns=['imgpath', 'annopath'])
@@ -167,19 +167,17 @@ def split_data():
         with TEST_LABEL_PATH.open('w') as f:
             json.dump(test_dict, f)
         
-        # person detection results
+        # person detection results (test)
         box_json = list()
-        id_list = list()
-        for idx, item in enumerate(valid_dict['annotations']):
+        for idx, item in enumerate(test_dict['annotations']):
             temp_dict = dict()
             temp_dict['bbox'] = item['bbox']
             temp_dict['category_id'] = 1
             temp_dict['image_id'] = item['image_id']
             temp_dict['score'] = 0.99
             box_json.append(temp_dict)
-            id_list.append(item['id'])       
 
-        with open(VALID_BOX_PATH, 'w') as f:
+        with open(BOX_PATH, 'w') as f:
             json.dump(box_json, f)
 
     else:
