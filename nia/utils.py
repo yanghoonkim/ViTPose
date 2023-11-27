@@ -56,7 +56,8 @@ COLL_PATH = BASE_PATH / '원천데이터'
 TRAIN_LABEL_PATH = BASE_PATH / 'keypoint_train_label.json'
 VALID_LABEL_PATH = BASE_PATH / 'keypoint_valid_label.json'
 TEST_LABEL_PATH = BASE_PATH / 'keypoint_test_label.json'
-BOX_PATH = BASE_PATH / 'boxes.json'
+VALID_BOX_PATH = BASE_PATH / 'valid_boxes.json'
+TEST_BOX_PATH = BASE_PATH / 'test_boxes.json'
 
 def to_frame(pairs):
     df = pd.DataFrame(pairs, columns=['imgpath', 'annopath'])
@@ -167,18 +168,30 @@ def split_data():
         with TEST_LABEL_PATH.open('w') as f:
             json.dump(test_dict, f)
         
-        # person detection results (test)
-        box_json = list()
+        # person detection results
+        valid_box_json = list()
+        for idx, item in enumerate(valid_dict['annotations']):
+            temp_dict = dict()
+            temp_dict['bbox'] = item['bbox']
+            temp_dict['category_id'] = 1
+            temp_dict['image_id'] = item['image_id']
+            temp_dict['score'] = 0.99
+            valid_box_json.append(temp_dict)
+
+        with open(VALID_BOX_PATH, 'w') as f:
+            json.dump(valid_box_json, f)
+
+        test_box_json = list()
         for idx, item in enumerate(test_dict['annotations']):
             temp_dict = dict()
             temp_dict['bbox'] = item['bbox']
             temp_dict['category_id'] = 1
             temp_dict['image_id'] = item['image_id']
             temp_dict['score'] = 0.99
-            box_json.append(temp_dict)
+            test_box_json.append(temp_dict)
 
-        with open(BOX_PATH, 'w') as f:
-            json.dump(box_json, f)
+        with open(TEST_BOX_PATH, 'w') as f:
+            json.dump(test_box_json, f)
 
     else:
         print('[DATA SPLIT] Load existing files...')   

@@ -35,7 +35,7 @@ lr_config = dict(
     warmup_iters=4000,
     warmup_ratio=0.001,
     step=[170, 200])
-total_epochs = 210
+total_epochs = 50
 target_type = 'GaussianHeatmap'
 channel_cfg = dict(
     num_output_channels=17,
@@ -95,8 +95,26 @@ data_cfg = dict(
     vis_thr=0.2,
     use_gt_bbox=False,
     det_bbox_thr=0.0,
-    bbox_file='data/nia/boxes.json',
+    bbox_file='data/nia/valid_boxes.json',
 )
+
+data_cfg_test = dict(
+    image_size=[192, 256],
+    heatmap_size=[48, 64],
+    num_output_channels=channel_cfg['num_output_channels'],
+    num_joints=channel_cfg['dataset_joints'],
+    dataset_channel=channel_cfg['dataset_channel'],
+    inference_channel=channel_cfg['inference_channel'],
+    soft_nms=False,
+    nms_thr=1.0,
+    oks_thr=0.9,
+    vis_thr=0.2,
+    use_gt_bbox=False,
+    det_bbox_thr=0.0,
+    bbox_file='data/nia/test_boxes.json',
+)
+
+
 
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -170,7 +188,7 @@ data = dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/keypoint_test_label.json',
         img_prefix=f'{data_root}/원천데이터/',
-        data_cfg=data_cfg,
+        data_cfg=data_cfg_test,
         pipeline=test_pipeline,
         dataset_info={{_base_.dataset_info}}),
 )
