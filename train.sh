@@ -1,1 +1,1 @@
-python tools/train.py nia/nia_config_base.py --cfg-options load_from=work_dirs/vitpose-b.pth
+python tools/train.py nia/nia_config_base.py --cfg-options load_from=work_dirs/pretrained/vitpose-b.pth
