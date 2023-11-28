@@ -24,6 +24,8 @@ RUN git clone https://github.com/yanghoonkim/ViTPose.git
 
 WORKDIR /root/ViTPose
 
+RUN git checkout nia
+
 RUN pip install -v -e .
 
 RUN pip install timm==0.4.9 einops numpy==1.23.5 opencv-python==4.5.5.64 yapf==0.40.1 future tensorboard pandas notebook==6.4.8 traitlets==5.9.0 polars
