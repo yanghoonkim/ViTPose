@@ -22,7 +22,6 @@ import mmcv_custom
 from nia.utils import *
 
 def parse_args():
-    split_data()
     parser = argparse.ArgumentParser(description='Train a pose model')
     parser.add_argument('config', help='train config file path')
     parser.add_argument('--work-dir', help='the dir to save logs and models')
@@ -81,6 +80,7 @@ def parse_args():
 
 
 def main():
+    split_data()
     args = parse_args()
 
     cfg = Config.fromfile(args.config)
