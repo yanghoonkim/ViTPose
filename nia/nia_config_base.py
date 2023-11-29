@@ -167,7 +167,7 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-img_prefix = coll_path_str
+img_prefix = coll_path_str + '/'
 data = dict(
     samples_per_gpu=64,
     workers_per_gpu=4,
