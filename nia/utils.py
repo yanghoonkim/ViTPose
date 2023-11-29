@@ -59,6 +59,11 @@ TEST_LABEL_PATH = BASE_PATH / 'keypoint_test_label.json'
 VALID_BOX_PATH = BASE_PATH / 'valid_boxes.json'
 TEST_BOX_PATH = BASE_PATH / 'test_boxes.json'
 
+coll_path_str = COLL_PATH.as_posix()
+train_label_path_str = TRAIN_LABEL_PATH.as_posix()
+valid_label_path_str = VALID_LABEL_PATH.as_posix()
+test_label_path_str = TEST_LABEL_PATH.as_posix()
+
 def to_frame(pairs):
     df = pd.DataFrame(pairs, columns=['imgpath', 'annopath'])
     df.index = df.imgpath.apply(lambda x: x.split('/')[-1])

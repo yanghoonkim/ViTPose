@@ -1,3 +1,6 @@
+from nia.utils import coll_path_str, train_label_path_str, valid_label_path_str, test_label_path_str
+#from nia.utils import COLL_PATH, TRAIN_LABEL_PATH, VALID_LABEL_PATH, TEST_LABEL_PATH
+
 _base_ = [
     '/root/ViTPose/configs/_base_/default_runtime.py',
     '/root/ViTPose/configs/_base_/datasets/coco.py'
@@ -164,7 +167,7 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-data_root = 'data/nia'
+img_prefix = coll_path_str
 data = dict(
     samples_per_gpu=64,
     workers_per_gpu=4,
@@ -172,24 +175,23 @@ data = dict(
     test_dataloader=dict(samples_per_gpu=32),
     train=dict(
         type='TopDownCocoDataset',
-        ann_file=f'{data_root}/keypoint_train_label.json',
-        img_prefix=f'{data_root}/1.원천데이터/',
+        ann_file=train_label_path_str,
+        img_prefix=img_prefix,
         data_cfg=data_cfg,
         pipeline=train_pipeline,
         dataset_info={{_base_.dataset_info}}),
     val=dict(
         type='TopDownCocoDataset',
-        ann_file=f'{data_root}/keypoint_valid_label.json',
-        img_prefix=f'{data_root}/1.원천데이터/',
+        ann_file=valid_label_path_str,
+        img_prefix=img_prefix,
         data_cfg=data_cfg,
         pipeline=val_pipeline,
         dataset_info={{_base_.dataset_info}}),
     test=dict(
         type='TopDownCocoDataset',
-        ann_file=f'{data_root}/keypoint_test_label.json',
-        img_prefix=f'{data_root}/1.원천데이터/',
+        ann_file=test_label_path_str,
+        img_prefix=img_prefix,
         data_cfg=data_cfg_test,
         pipeline=test_pipeline,
         dataset_info={{_base_.dataset_info}}),
 )
-
