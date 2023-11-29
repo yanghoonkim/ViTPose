@@ -1,10 +1,10 @@
-from nia.utils import coll_path_str, train_label_path_str, valid_label_path_str, test_label_path_str
-#from nia.utils import COLL_PATH, TRAIN_LABEL_PATH, VALID_LABEL_PATH, TEST_LABEL_PATH
-
 _base_ = [
     '/root/ViTPose/configs/_base_/default_runtime.py',
     '/root/ViTPose/configs/_base_/datasets/coco.py'
 ]
+
+from nia.utils import img_path_str, train_label_path_str, valid_label_path_str, test_label_path_str, valid_box_path_str, test_box_path_str
+
 evaluation = dict(interval=10, metric='mAP', save_best='AP')
 
 optimizer = dict(type='AdamW', lr=1e-4, betas=(0.9, 0.999), weight_decay=0.1,
@@ -98,7 +98,7 @@ data_cfg = dict(
     vis_thr=0.2,
     use_gt_bbox=False,
     det_bbox_thr=0.0,
-    bbox_file='data/nia/valid_boxes.json',
+    bbox_file=valid_box_path_str,
 )
 
 data_cfg_test = dict(
@@ -114,7 +114,7 @@ data_cfg_test = dict(
     vis_thr=0.2,
     use_gt_bbox=False,
     det_bbox_thr=0.0,
-    bbox_file='data/nia/test_boxes.json',
+    bbox_file=test_box_path_str,
 )
 
 
@@ -167,7 +167,7 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-img_prefix = coll_path_str + '/'
+img_prefix = img_path_str + '/'
 data = dict(
     samples_per_gpu=64,
     workers_per_gpu=4,

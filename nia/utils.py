@@ -50,19 +50,26 @@ categories = [{'supercategory': 'person',
    [5, 7]]}]
 
 
-BASE_PATH = Path('/root/ViTPose/data/nia/')
-ANNO_PATH = BASE_PATH / '2.라벨링데이터'
-COLL_PATH = BASE_PATH / '1.원천데이터'
-TRAIN_LABEL_PATH = BASE_PATH / 'keypoint_train_label.json'
-VALID_LABEL_PATH = BASE_PATH / 'keypoint_valid_label.json'
-TEST_LABEL_PATH = BASE_PATH / 'keypoint_test_label.json'
+img_prefix = '1.원천데이터'
+data_root = '/root/ViTPose/data/nia/'
+train_ann_file = 'keypoint_train_label.json'
+val_ann_file = 'keypoint_valid_label.json'
+test_ann_file = 'keypoint_test_label.json'
+
+BASE_PATH = Path(data_root)
+IMG_PATH = BASE_PATH /  img_prefix
+TRAIN_LABEL_PATH = BASE_PATH / train_ann_file
+VALID_LABEL_PATH = BASE_PATH / val_ann_file
+TEST_LABEL_PATH = BASE_PATH / test_ann_file
 VALID_BOX_PATH = BASE_PATH / 'valid_boxes.json'
 TEST_BOX_PATH = BASE_PATH / 'test_boxes.json'
 
-coll_path_str = COLL_PATH.as_posix()
+img_path_str = IMG_PATH.as_posix()
 train_label_path_str = TRAIN_LABEL_PATH.as_posix()
 valid_label_path_str = VALID_LABEL_PATH.as_posix()
 test_label_path_str = TEST_LABEL_PATH.as_posix()
+valid_box_path_str = VALID_BOX_PATH.as_posix()
+test_box_path_str = TEST_BOX_PATH.as_posix()
 
 def to_frame(pairs):
     df = pd.DataFrame(pairs, columns=['imgpath', 'annopath'])
@@ -94,7 +101,7 @@ def make_dict(df):
             item_json = json.load(f)
 
         anno_images.extend(item_json['images'])
-        anno_images[-1]['file_name'] = Path(filename).relative_to(coll_path_str).as_posix()
+        anno_images[-1]['file_name'] = Path(filename).relative_to(img_path_str).as_posix()
         anno_annotations.extend(item_json['annotations'])
 
     for idx, item in enumerate(anno_annotations):
@@ -121,7 +128,7 @@ def split_data():
                 ),
             ),
             keypoint_reader=NiaDataPathExtractor(
-                dataset_dir=BASE_PATH.as_posix(),
+                dataset_dir=data_root,
                 pattern=(
                     r"(?P<type>[^/]+)/"
                     r"(?P<subtype>[^/]+)/"
