@@ -51,8 +51,8 @@ categories = [{'supercategory': 'person',
 
 
 BASE_PATH = Path('/root/ViTPose/data/nia/')
-ANNO_PATH = BASE_PATH / '라벨링데이터'
-COLL_PATH = BASE_PATH / '원천데이터'
+ANNO_PATH = BASE_PATH / '2.라벨링데이터'
+COLL_PATH = BASE_PATH / '1.원천데이터'
 TRAIN_LABEL_PATH = BASE_PATH / 'keypoint_train_label.json'
 VALID_LABEL_PATH = BASE_PATH / 'keypoint_valid_label.json'
 TEST_LABEL_PATH = BASE_PATH / 'keypoint_test_label.json'
@@ -89,7 +89,7 @@ def make_dict(df):
             item_json = json.load(f)
 
         anno_images.extend(item_json['images'])
-        anno_images[-1]['file_name'] = Path(filename).relative_to('/root/ViTPose/data/nia/원천데이터/').as_posix()
+        anno_images[-1]['file_name'] = Path(filename).relative_to('/root/ViTPose/data/nia/1.원천데이터/').as_posix()
         anno_annotations.extend(item_json['annotations'])
 
     for idx, item in enumerate(anno_annotations):
