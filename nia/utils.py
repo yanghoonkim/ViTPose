@@ -94,7 +94,7 @@ def make_dict(df):
             item_json = json.load(f)
 
         anno_images.extend(item_json['images'])
-        anno_images[-1]['file_name'] = Path(filename).relative_to('/root/ViTPose/data/nia/1.원천데이터/').as_posix()
+        anno_images[-1]['file_name'] = Path(filename).relative_to(coll_path_str).as_posix()
         anno_annotations.extend(item_json['annotations'])
 
     for idx, item in enumerate(anno_annotations):
@@ -124,6 +124,7 @@ def split_data():
                 dataset_dir=BASE_PATH.as_posix(),
                 pattern=(
                     r"(?P<type>[^/]+)/"
+                    r"(?P<subtype>[^/]+)/"
                     r"(?P<channel>[^/]+)/"
                     r"(?P<filename>[^/]+)$"
                 ),
