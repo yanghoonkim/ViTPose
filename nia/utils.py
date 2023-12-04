@@ -5,7 +5,7 @@ import json
 from nia.nia_dataset_reader import (
     NiaDataPathExtractor,
     DataFrameSplitter,
-    NiaKeypointDataPathProvider,
+    NiaDataPathProvider,
 )
                
 
@@ -116,38 +116,16 @@ def split_data():
     if (not TRAIN_LABEL_PATH.exists()) or (not VALID_LABEL_PATH.exists()) or (not TEST_LABEL_PATH.exists()):
         print('[DATA SPLIT] Splitting data...')
 
-        path_provider = NiaKeypointDataPathProvider(
-            visible_reader=NiaDataPathExtractor(
+        path_provider = NiaDataPathProvider(
+            reader=NiaDataPathExtractor(
                 dataset_dir=BASE_PATH.as_posix(),
-                pattern=(
-                    r"(?P<type>[^/]+)/"
-                    r"(?P<collector>[^/]+)/"
-                    r".*?"
-                    r"(?P<channel>[^/]+)/"
-                    r"(?P<filename>[^/]+)$"
-                ),
             ),
-            keypoint_reader=NiaDataPathExtractor(
-                dataset_dir=data_root,
-                pattern=(
-                    r"(?P<type>[^/]+)/"
-                    r"(?P<subtype>[^/]+)/"
-                    r"(?P<channel>[^/]+)/"
-                    r"(?P<filename>[^/]+)$"
-                ),
-            ),
-            splitter=DataFrameSplitter(
-                groups=["channel", "collector", "scene", "road", "timeslot", "weather"],
-                splits=["train", "valid", "test"],
-                ratios=[8, 1, 1],
-                seed=231111,
-            ),
-            channels=["image_B", "image_F", "image_L", "image_R"],
+            splitter=DataFrameSplitter(),
         )
 
-        train_path_pairs = path_provider.get_split_data_list("train")
-        valid_path_pairs = path_provider.get_split_data_list('valid')
-        test_path_pairs = path_provider.get_split_data_list('test')
+        train_path_pairs = path_provider.get_split_data_list(channels="keypoint", splits="train")
+        valid_path_pairs = path_provider.get_split_data_list(channels="keypoint", splits="valid")
+        test_path_pairs = path_provider.get_split_data_list(channels="keypoint", splits="test")
 
         df_thermal_train = to_frame(train_path_pairs)
         df_thermal_valid = to_frame(valid_path_pairs)
