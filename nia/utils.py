@@ -120,7 +120,6 @@ def split_data():
             reader=NiaDataPathExtractor(
                 dataset_dir=BASE_PATH.as_posix(),
             ),
-            splitter=DataFrameSplitter(),
         )
 
         train_path_pairs = path_provider.get_split_data_list(channels="keypoint", splits="train")
