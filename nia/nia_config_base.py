@@ -3,7 +3,7 @@ _base_ = [
     '/root/ViTPose/configs/_base_/datasets/coco.py'
 ]
 
-from nia.utils import img_path_str, train_label_path_str, valid_label_path_str, test_label_path_str, valid_box_path_str, test_box_path_str
+from nia.utils import train_label_path_str, valid_label_path_str, test_label_path_str, valid_box_path_str, test_box_path_str
 
 evaluation = dict(interval=10, metric='mAP', save_best='AP')
 
@@ -167,7 +167,6 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-img_prefix = img_path_str + '/'
 data = dict(
     samples_per_gpu=64,
     workers_per_gpu=4,
@@ -176,21 +175,21 @@ data = dict(
     train=dict(
         type='TopDownCocoDataset',
         ann_file=train_label_path_str,
-        img_prefix=img_prefix,
+        img_prefix='',
         data_cfg=data_cfg,
         pipeline=train_pipeline,
         dataset_info={{_base_.dataset_info}}),
     val=dict(
         type='TopDownCocoDataset',
         ann_file=valid_label_path_str,
-        img_prefix=img_prefix,
+        img_prefix='',
         data_cfg=data_cfg,
         pipeline=val_pipeline,
         dataset_info={{_base_.dataset_info}}),
     test=dict(
         type='TopDownCocoDataset',
         ann_file=test_label_path_str,
-        img_prefix=img_prefix,
+        img_prefix='',
         data_cfg=data_cfg_test,
         pipeline=test_pipeline,
         dataset_info={{_base_.dataset_info}}),
